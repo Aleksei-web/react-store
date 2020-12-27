@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, Tabs, Tooltip } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   HeardOutlined,
   HeartOutlined,
@@ -12,13 +12,18 @@ import Laptop from "../../images/macbook_PNG49.png";
 import ProductListItems from "./ProductListItems";
 import StarRating from "react-star-ratings";
 import RatingModal from "../modal/RatingModal";
-import { showAverage } from "../../functions/rating";import _ from 'lodash';
+import { showAverage } from "../../functions/rating";
+import _ from 'lodash';
 import {useSelector, useDispatch} from 'react-redux';
+import {addToWishlist} from '../../functions/user'
+import { toast } from "react-toastify";
 
 const { TabPane } = Tabs;
 // This is children component of Priduct page
 const SingleProduct = ({ product, onStarClik, star }) => {
   const [tooltip, setTooltip] = useState('Click to add')
+
+  const history = useHistory()
 
   const { title, description, images, slug, _id } = product;
 
@@ -50,6 +55,15 @@ const SingleProduct = ({ product, onStarClik, star }) => {
       })
     }
   };
+
+  const handleAddToWishlist = (e) => {
+    e.preventDefault();
+    addToWishlist(product._id, user.token).then(res => {
+      console.log('ADDED TO WISHLIST', res.data);
+      toast.success('Added to Wishlist');
+      // history.push('/user/wishlist')
+    })
+  }
 
   return (
     <>
@@ -90,10 +104,10 @@ const SingleProduct = ({ product, onStarClik, star }) => {
             Add to card
           </a>
           </Tooltip>,
-            <Link to="/">
+            <a onClick={handleAddToWishlist}>
               <HeartOutlined className="rext-info" /> <br />
               Add to Wishlist
-            </Link>,
+            </a>,
             <RatingModal>
               <StarRating
                 name={_id}
