@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/Aleksei-web/react-store/issues"
   },
-  "homepage": "https://github.com/Aleksei-web/react-store#readme",
-  "engines": {
-    "node": "14x"
-  }
+  "homepage": "https://github.com/Aleksei-web/react-store#readme"
 }
