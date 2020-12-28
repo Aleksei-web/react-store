@@ -19,7 +19,7 @@ mongoose.connect(process.env.DATABASE, {
 	.then(() => console.log('DB CONNECTED'))
 	.catch(err => console.log(`DB CONNECTION ERR ${err}`))
 
-app.use(path.resolve('../client/build'))
+app.use(express.static(path.resolve('../client/build')))
 app.use(cors())
 app.use(morgan('dev'))
 app.use(bodyParser.json({limit: '2mb'}))
