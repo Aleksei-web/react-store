@@ -2,9 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-const {readdirSync} = require('fs')
-require('dotenv').config()
+const {readdirSync} = require('fs');
+const cors = require('cors')
+require('dotenv').config();
+const path = require('path');
 
 
 const app = express()
@@ -18,13 +19,19 @@ mongoose.connect(process.env.DATABASE, {
 	.then(() => console.log('DB CONNECTED'))
 	.catch(err => console.log(`DB CONNECTION ERR ${err}`))
 
+app.use(path.resolve('../client/build'))
+app.use(cors())
 app.use(morgan('dev'))
 app.use(bodyParser.json({limit: '2mb'}))
-app.use(cors())
+
 
 
 readdirSync('./routes').map((r) => 
 app.use('/api', require('./routes/' + r)))
+
+app.get('*', (req, res) => {
+	res.sendFile(path.resolve('../client/build/index.html'))
+})
 
 const port = process.env.PORT || 8080;
 
